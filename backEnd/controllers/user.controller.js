@@ -1,33 +1,31 @@
-const User = require('../models/user.model');
-const ObjectId = require('mongoose').Types.ObjectId; //ObjectId,type spécial utilisé pour les identifiants uniques
+const User = require('../models/user.model'); 
 const bcrypt = require('bcrypt')
 
 // Function trouve tous les utilisateurs
 exports.getAllUsers = async (req, res) => {
-    const users = await User.find().select('-password'); // select -password permet d'éviter de faire transiter le password
-    res.status(200).json(users)
+    if (req.body.userId === req.params.id || req.body.isAdmin) {
+
+        const users = await User.find().select('-password'); // select -password permet d'éviter de faire transiter le password
+        res.status(200).json(users)
+    }
 }
 
 // Function infos utilisateur
-exports.userInfo = (req, res) => {
-    // console.log(req.params);
-    if (!ObjectId.isValid(req.params.id)) { // Methode de verification de l'ID passé en parametres
-        return res.status(400).send('ID inconnu : ' + req.params.id)
-    }
+exports.userInfo = async (req, res) => {
 
-    User.findById(req.params.id, (err, docs) => {
-            if (!err) {
-                res.send(docs)
-            } else {
-                console.log('ID inconnu : ' + err);
+            try {
+                const user = await User.findById(req.params.id);
+                const {password, updatedAt, ...other} = user._doc;
+                res.status(200).json(other)
+            
+            } catch (err) {
+
             }
-        })
-        .select('-password');
 };
 
 // Function mise a jour des données utilisateur
 exports.updateUser = async (req, res) => {
-    if (req.body.userId === req.params.id || req.user.isAmdin) {
+    if (req.body.userId === req.params.id || req.body.isAmdin) {
         if(req.body.password){
 
             try {
@@ -57,19 +55,69 @@ exports.updateUser = async (req, res) => {
 
 // Function supprime l'utilisateur
 exports.deleteUser = async (req, res) => {
-    if (!ObjectId.isValid(req.params.id)) {
-        return res.status(400).send('ID inconnu : ' + req.params.id);
+    if (req.body.userId === req.params.id || req.body.isAdmin) {
+
+        try {
+            await User.findByIdAndDelete(req.params.id)
+            res.status(200).json({
+                message: "Account as been deleted !"
+            })
+        } catch (err) {
+            return res.status(500).json({
+                message: err
+            });
+        };
     }
-    try {
-        await User.remove({
-            _id: req.params.id
-        }).exec();
-        res.status(200).json({
-            message: "Supprimé avec succès !"
-        })
-    } catch (err) {
-        return res.status(500).json({
-            message: err
-        });
-    };
 };
+
+// Function follow a user
+exports.followUser = async (req, res) => {
+    if (req.body.userId !== req.params.id) {
+
+        try {
+            const user = await User.findById(req.params.id);
+            const currentUser = await User.findById(req.body.userId);
+                if (!user.followers.includes(req.body.userId)){
+                    await user.updateOne({
+                        $push:{followers: req.body.userId}
+                    })
+                    await currentUser.updateOne({
+                        $push:{followings: req.params.id}
+                    })
+                    res.status(200).json('user has been followed')
+                } else {
+                    res.status(403).json('You allready follow this user')
+                }
+        } catch (err) {
+            res.status(500).json(err)
+        }
+    } else {
+        res.status(403).json('You cant follow yourself')
+    }
+}
+
+// Function unfollow a user
+exports.unFollowUser = async (req, res) => {
+    if (req.body.userId !== req.params.id) {
+
+        try {
+            const user = await User.findById(req.params.id);
+            const currentUser = await User.findById(req.body.userId);
+                if (user.followers.includes(req.body.userId)){
+                    await user.updateOne({
+                        $pull:{followers: req.body.userId}
+                    })
+                    await currentUser.updateOne({
+                        $pull:{followings: req.params.id}
+                    })
+                    res.status(200).json('user has been unfollowed')
+                } else {
+                    res.status(403).json('You dont follow this user')
+                }
+        } catch (err) {
+            res.status(500).json(err)
+        }
+    } else {
+        res.status(403).json('You cant unfollow yourself')
+    }
+}

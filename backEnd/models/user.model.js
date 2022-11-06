@@ -2,9 +2,6 @@ const mongoose = require('mongoose');
 const { isEmail } = require('validator'); // Bibliotheque nodeModule, fonction pour sécuriser les emails
 const bcrypt = require('bcrypt'); // bibliothèque pour vous aider à hacher les mots de passe
 
-const uniqueValidator = require("mongoose-unique-validator");
-
-
 // Schema mongo db utilisateur
 const userSchema = mongoose.Schema({
         username: {
@@ -45,7 +42,7 @@ const userSchema = mongoose.Schema({
             type: Array,
             default: [],
         },
-        followins: {
+        followings: {
             type: Array,
             default: [],
         },
@@ -79,8 +76,6 @@ const userSchema = mongoose.Schema({
     }
 )
 
-
-userSchema.plugin(uniqueValidator);
 
 const UserModel = mongoose.model('user', userSchema)
 

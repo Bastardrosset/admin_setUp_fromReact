@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 // Schema mongo db des messages possibles
 const PostSchema = new mongoose.Schema({
-    posterId: {
+    userId: {
         type: String,
         required: true,
     },

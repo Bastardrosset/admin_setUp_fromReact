@@ -1,8 +1,7 @@
 const User = require('../models/user.model');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
-const sanitize = require('express-mongo-sanitize')
-const maxAge = 3 * 60 * 60 * 1000; // expire au bout de 3h.
+const sanitize = require('express-mongo-sanitize');
 
 require('dotenv').config({
     path: '../config/.env'

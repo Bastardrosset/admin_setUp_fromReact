@@ -1,8 +1,6 @@
 const PostModel = require('../models/post.model');
 const UserModel = require('../models/user.model');
 
-const ObjectId = require('mongoose').Types.ObjectId; //ObjectId,type spécial utilisé pour les identifiants
-
 
 //function affiche les posts
 module.exports.readPost = (req, res) => {
@@ -16,17 +14,26 @@ module.exports.readPost = (req, res) => {
         .sort({
             createdAt: -1
         }) // Permet de trier les posts les plus recents
-}
+};
+
+//function get a post
+module.exports.getAPost = async (req, res) => {
+    try {
+        const post = await PostModel.findById(req.params.id)
+        res.status(200).json(post)
+    } catch (err) {
+        res.status(500).json(err)
+    }
+};
 
 //function crééer un post
 module.exports.createPost = async (req, res) => {
-    // console.log('before create')
     let filename;
     if (req.file == null) {
-        filename = req.body.posterId + Date.now() + ".jpg";
+        filename = req.body.userId + Date.now() + ".jpg";
     }
     const newPost = new PostModel({
-        posterId: req.body.posterId,
+        userId: req.body.userId,
         message: req.body.message,
         picture: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : '',
         likers: [],
@@ -39,122 +46,75 @@ module.exports.createPost = async (req, res) => {
     } catch (error) {
         return res.status(400).send(error)
     }
-}
+};
 
 //function modifier son post
-module.exports.updatePost = (req, res) => {
-    if (!ObjectId.isValid(req.params.id)) { // Methode de verification de l'ID passé en parametres
-        return res.status(400).send('ID inconnu : ' + req.params.id)
-    }
-    const updatedRecord = {
-        message: req.body.message
-    }
-    PostModel.findByIdAndUpdate(
-        req.params.id, {
-            $set: updatedRecord
-        }, {
-            new: true
-        },
-        (error, docs) => {
-            if (!error) {
-                res.send(docs);
+module.exports.updatePost = async (req, res) => {
+    try {
+        const post = await PostModel.findById(req.params.id);
+            if (post.userId === req.body.userId) {
+                await post.updateOne({
+                    $set: req.body
+                });
+                res.status(200).json('The post has been updated')
             } else {
-                console.log("Mise à jour :" + error);
+                res.status(403).json('You can update only your post')
             }
-        }
-    )
-}
+    } catch (err) {
+        res.status(500).json(err);
+    };
+};
 
 //function supprimer son post
-module.exports.deletePost = (req, res) => {
-    if (!ObjectId.isValid(req.params.id)) { // Methode de verification de l'ID passé en parametres
-        return res.status(400).send('ID inconnu : ' + req.params.id)
-    }
-    PostModel.findByIdAndRemove(
-        req.params.id,
-        (error, docs) => {
-            if (!error) {
-                res.status(200).send('post');
+module.exports.deletePost = async (req, res) => {
+    try {
+        const post = await PostModel.findById(req.params.id);
+            if (post.userId === req.body.userId) {
+                await post.deleteOne();
+                res.status(200).json('The post has been deleted');
             } else {
-                console.log("Suppression :" + error)
+                res.status(403).json('You can delete only your post');
             }
-        })
-}
+    } catch (err) {
+        res.status(500).json(err);
 
-// function like un post
+    };
+};
+
+// function like / disliked post
 module.exports.likePost = async (req, res) => {
-    if (!ObjectId.isValid(req.params.id)) {
-        return res.status(400).send('ID inconnu : ' + req.params.id)
-    }
     try {
-        await PostModel.findByIdAndUpdate(
-                req.params.id, {
-                    $addToSet: {
-                        likers: req.body.id
-                    } //transmet l'ID du liker
-                }, {
-                    new: true
-                }
-            )
-            .then((docs) => res.status(201).json(docs))
-            .catch((err) => res.status(401).send({
-                message: err
-            }));
-
-        await UserModel.findByIdAndUpdate(
-                req.body.id, {
-                    $addToSet: {
-                        likes: req.params.id
-                    }
-                }, {
-                    new: true
-                },
-            )
-            .then((docs) => res.status(201).json(docs))
-            .catch((error) => res.status(402).send({
-                message: error
-            }));
-    } catch (error) {
-        return
+        const post = await PostModel.findById(req.params.id);
+            if (!post.likers.includes(req.body.userId)) {
+                await post.updateOne({
+                    $push: {likers: req.body.userId}
+                });
+                res.status(200).json('The post has been liked');
+            } else {
+                await post.updateOne({
+                    $pull: {likers: req.body.userId}
+                })
+                res.status(200).json('The post has been disliked')
+            }
+    } catch (err) {
+        res.status(500).json(err)
     }
-}
+};
 
-//function ne plus aimer un post
-module.exports.unlikePost = async (req, res) => {
-    if (!ObjectId.isValid(req.params.id)) {
-        return res.status(400).send('ID inconnu : ' + req.params.id)
-    }
+module.exports.timelinePost = async (req, res) => {
+    const postArray = [];
     try {
-        await PostModel.findByIdAndUpdate(
-                req.params.id, {
-                    $pull: {
-                        likers: req.body.id
-                    } //transmet l'ID du liker
-                }, {
-                    new: true
-                },
-            )
-            .then((docs) => res.status(201).json(docs))
-            .catch((err) => res.status(401).send({
-                message: err
-            }));
-        await UserModel.findByIdAndUpdate(
-                req.body.id, {
-                    $pull: {
-                        likes: req.params.id
-                    }
-                }, {
-                    new: true
-                },
-            )
-            .then((docs) => res.status(201).json(docs))
-            .catch((error) => res.status(402).send({
-                message: error
-            }));
-    } catch (error) {
-        return
+        const currentUser = await UserModel.findById(req.body.userId);
+        const userPosts = await PostModel.find({userId: currentUser._id});
+        const friendPosts = await Promise.all(currentUser.followings.map((friendId) => {
+            return PostModel.find({userId: friendId})
+        }));
+        res.json(userPosts.concat(...friendPosts))
+    } catch (err) {
+        res.status(500).json(err)
     }
-}
+};
+
 
 //********** * Fonction commentaires * **********//
 
@@ -185,7 +145,7 @@ module.exports.commentPost = async (req, res) => {
     } catch (error) {
         return res.status(403).send(error)
     }
-}
+};
 
 //function editer un commentaire
 module.exports.editComment = (req, res) => {
@@ -215,7 +175,7 @@ module.exports.editComment = (req, res) => {
     } catch (error) {
         res.status(404).send(error);
     }
-}
+};
 
 //function supprimer un commentaire
 module.exports.deleteComment = (req, res) => {
@@ -244,4 +204,4 @@ module.exports.deleteComment = (req, res) => {
     } catch (error) {
         return res.status(400).send(error)
     }
-}
+};

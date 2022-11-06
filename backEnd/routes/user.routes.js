@@ -20,6 +20,9 @@ router.get('/', userCtrl.getAllUsers);
 router.get('/:id', userCtrl.userInfo);
 router.put('/:id', userCtrl.updateUser);
 router.delete('/:id', userCtrl.deleteUser);
+router.put('/:id/follow', userCtrl.followUser);
+router.put('/:id/unfollow', userCtrl.unFollowUser);
+
 
 
 //multer Profil

@@ -10,7 +10,6 @@ require('./config/db');
 
 const app = express();
 const path = require('path');
-const mongoSanitize = require("express-mongo-sanitize");
 
 
 // Headers & autorizations
@@ -34,14 +33,6 @@ app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
-
-// configuration express-mongo-sanitze
-app.use(
-  mongoSanitize({
-      allowDots: true,
-      replaceWith: "_",
-  })
-);
 
 
 // gestionnaire de routage des images
