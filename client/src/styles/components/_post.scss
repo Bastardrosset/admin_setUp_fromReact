@@ -1,0 +1,74 @@
+.post {
+    width: 100%;
+    border-radius: 20px;
+    -webkit-box-shadow: 0px 1px 15px 0px rgba(0,0,0,0.33); 
+    box-shadow: 0px 1px 15px 0px rgba(0,0,0,0.33);
+    margin: 30px 0px;
+        & .post-wrapper {
+            padding: 10px;
+                & .post-top {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                        & .post-top-left {
+                            display: flex;
+                            align-items: center;
+                                & .post-profil-img {
+                                    width: 34px;
+                                    height: 34px;
+                                    border-radius: 50%;
+                                    object-fit: cover;
+                                }
+                                & .post-username {
+                                    font-size: 1.1rem;
+                                    font-weight: 700;
+                                    margin: 0px 10px;
+                                }
+                                & .post-date {
+                                    font-size: 0.8rem;
+                                }
+                        }
+                }
+                & .post-center {
+                    margin: 20px 0px;
+                        & .post-img {
+                            margin-top: 20px;
+                            width: 100%;
+                            max-height: 500px;
+                            object-fit: contain;
+                            border-radius: 20px;
+                        }
+                }
+                & .post-bottom {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                        & .post-bottom-left {
+                            display: flex;
+                            align-items: center;
+                            & .post-like-icon {
+                                width: 24px;
+                                height: 24px;
+                                margin-right: 5px;
+                                cursor: pointer;
+                            }
+                            & .post-likes-counter {
+                                font-size: 15px;
+                            }
+                        }
+                        & .post-bottom-right {
+                            display: flex;
+                            align-items: center;
+                                & .post-comment-icon {
+                                    width: 24px;
+                                    height: 24px;
+                                    margin-right: 5px;
+                                    cursor: pointer;
+                                }
+                                & .post-comments-counter {
+                                    font-size: 15px;
+                                }
+                        }
+                }
+        }
+}

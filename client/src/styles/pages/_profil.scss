@@ -1,0 +1,45 @@
+.profil {
+  display: flex;
+    & .profil-right {
+      flex: 9;
+        & .profil-right-top {
+          & .profil-cover {
+            height: 320px;
+            position: relative;
+              & .profil-cover-img {
+                width: 100%;
+                height: 250px;
+                object-fit: cover;
+              }
+              & .profil-user-img {
+                width: 165px;
+                height: 165px;
+                border-radius: 50%;
+                object-fit: cover;
+                position: absolute;
+                left: 0;
+                right: 0;
+                margin-left: 50%;
+                transform: translateX(-50%);
+                top: 149px;
+                border: 5px solid $white;
+              }
+          }
+          & .profil-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+              & .profil-info-name {
+                font-size: 2rem;
+              }
+              & .profil-info-desc {
+                font-weight: 300;
+              }
+          }
+        }
+        & .profil-right-bottom {
+          display: flex;
+        }
+    }
+}

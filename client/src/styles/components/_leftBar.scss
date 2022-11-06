@@ -1,0 +1,31 @@
+.left-bar {
+    flex: 3;
+    height: calc(100vh - 200px);
+        & .left-bar-wrapper {
+            display: flex;
+            padding-top: 40px;
+            padding-left: 20px;
+            flex-wrap: nowrap;
+                & ul {
+                    & li {
+                        margin-bottom: 40px;
+                        display: flex;
+                        align-items: center;
+                        color: $Tertiaire;
+                        cursor: pointer;
+                        & .icons{
+                            width: 60px;
+                            height: 60px;
+                            transition: .2s ease;
+                        }
+                        & span {
+                            font-size: 1.1rem;
+                            font-weight: 700;
+                        }
+                        &:hover {
+                            color: $black
+                        }
+                    }
+                }
+        }
+}

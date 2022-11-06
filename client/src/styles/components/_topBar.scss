@@ -1,0 +1,44 @@
+.top-bar-container {
+    height: 200px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    position: sticky;
+    top: 0;
+        & .top-bar-left {
+            flex: 5;
+            display: flex;
+            align-items: center;
+            & img {
+                width: 150px;
+                height: 150px;
+                cursor: pointer;
+            }
+            & h1 {
+                cursor: pointer;
+                color: $Primaire;
+            }
+        }
+        & .top-bar-right{
+            flex: 7;
+        }
+         & .top-bar-links {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding-right: 50px;
+            & .top-bar-profil {
+                padding-right: 40px;
+                & img {
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 50%;
+                    cursor: pointer;
+                }
+            }
+            & .top-bar-icon-item {
+                    cursor: pointer;
+            }
+         }
+}
+

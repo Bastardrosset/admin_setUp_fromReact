@@ -1,0 +1,68 @@
+.share {
+    width: 100%;
+    height: 150px;
+    border-radius: 20px;
+    -webkit-box-shadow: 0px 1px 15px 0px rgba(0,0,0,0.33); 
+    box-shadow: 0px 1px 15px 0px rgba(0,0,0,0.33);
+        & .share-wrapper {
+            padding: 10px;
+                & .share-top {
+                    display: flex;
+                    align-items: center;
+                    & .share-profil-img {
+                        width: 40px;
+                        height: 40px;
+                        border-radius: 50%;
+                        object-fit: cover;
+                        margin-right: 10px;
+                    }
+                    & .share-input {
+                        border: none;
+                        width: 80%;
+                        font-size: 1.1rem;
+                            &:focus {
+                                outline: none;
+                            }
+                    }
+                }
+                & .share-hr {
+                    margin: 20px;
+                }
+                & .share-bottom {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-around;
+                        & .share-options {
+                            display: flex;
+                                & .share-option {
+                                    display: flex;
+                                    align-items: center;
+                                    margin-right: 10px;
+                                    cursor: pointer;
+                                    & .share-icon {
+                                        color: $Tertiaire;
+                                        font-size: 1.6rem;
+                                        transition: .2s ease;
+                                        &:hover {
+                                            color: $Primaire;
+                                        }
+                                    }
+                                }
+                        }
+                        & .share-button {
+                            border: none;
+                            padding: 7px;
+                            border-radius: 5px;
+                            background-color: $LightTertiaire;
+                            font-weight: 700;
+                            color: $white;
+                            cursor: pointer;
+                            transition: .2s ease;
+                                &:hover{
+                                    background-color: $green;
+                                    color: $black;
+                                }
+                        }
+                }
+        }
+}
