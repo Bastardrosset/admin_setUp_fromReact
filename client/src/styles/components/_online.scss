@@ -1,0 +1,15 @@
+.right-bar-friend {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+        & .right-bar-profil-img-container {
+            margin-right: 10px;
+            position: relative;
+                & .right-bar-profil-img {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    object-fit: cover;
+                }
+        }
+}

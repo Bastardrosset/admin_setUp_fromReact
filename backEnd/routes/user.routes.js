@@ -17,7 +17,7 @@ router.post('/login', authCtrl.signIn);
 router.get('/logout', authCtrl.logout);
 
 router.get('/', userCtrl.getAllUsers);
-router.get('/:id', userCtrl.userInfo);
+router.get('/', userCtrl.userInfo);
 router.put('/:id', userCtrl.updateUser);
 router.delete('/:id', userCtrl.deleteUser);
 router.put('/:id/follow', userCtrl.followUser);

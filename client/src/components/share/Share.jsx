@@ -7,7 +7,7 @@ export default function Share() {
     <div className='share'>
         <div className="share-wrapper">
             <div className="share-top">
-                <img className='share-profil-img' src='/img/personn/ben.png' alt='Avatar par default' />
+                <img className='share-profil-img' src='/images/personn/ben.png' alt='Avatar par default' />
                 <input 
                     placeholder= "What's news xav"
                     type='text' 

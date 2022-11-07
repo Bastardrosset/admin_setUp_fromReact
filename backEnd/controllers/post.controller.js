@@ -16,6 +16,17 @@ module.exports.readPost = (req, res) => {
         }) // Permet de trier les posts les plus recents
 };
 
+// function user's all post
+module.exports.usersAllPost = async (req, res) => {
+    try {
+        const user = await UserModel.findOne({username: req.params.username});
+        const posts = await PostModel.find({userId: user._id});
+        res.status(200).json(posts);
+    } catch (err) {
+        res.status(500).json(err)
+    }
+}
+
 //function get a post
 module.exports.getAPost = async (req, res) => {
     try {
@@ -104,12 +115,12 @@ module.exports.likePost = async (req, res) => {
 module.exports.timelinePost = async (req, res) => {
     const postArray = [];
     try {
-        const currentUser = await UserModel.findById(req.body.userId);
+        const currentUser = await UserModel.findById(req.params.userId);
         const userPosts = await PostModel.find({userId: currentUser._id});
         const friendPosts = await Promise.all(currentUser.followings.map((friendId) => {
             return PostModel.find({userId: friendId})
         }));
-        res.json(userPosts.concat(...friendPosts))
+        res.status(200).json(userPosts.concat(...friendPosts))
     } catch (err) {
         res.status(500).json(err)
     }

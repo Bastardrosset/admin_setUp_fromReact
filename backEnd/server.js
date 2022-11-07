@@ -1,47 +1,35 @@
-const http = require('http');
-const app = require('./app');
+const express = require('express');
+const app = express();
+const path = require('path');
+const dotenv = require('dotenv');
+// module morgan pour le suivi des requêtes
+const morgan = require("morgan");
+//aide à sécuriser l'api en définissant divers en-têtes HTTP
+const helmet = require('helmet')
 
-const normalizePort = val => { // La fonction normalizePort renvoie un port valide, qu'il soit fourni sous la forme d'un numéro ou d'une chaîne
-  const port = parseInt(val, 10);
+// Chemin vers les routes user et routes post
+const userRoutes = require('./routes/user.routes');
+const postRoutes = require('./routes/post.routes');
 
-  if (isNaN(port)) {
-    return val;
-  }
-  if (port >= 0) {
-    return port;
-  }
-  return false;
-};
-const port = normalizePort(process.env.PORT);
-app.set('port', port);
 
-const errorHandler = error => { // La fonction errorHandler  recherche les différentes erreurs et les gère de manière appropriée. Elle est ensuite enregistrée dans le serveur
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
-  const address = server.address(); // Ecouteur d'évènements consigne le port ou le canal nommé sur lequel le serveur s'exécute dans la console
-  const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
-  switch (error.code) {
-    case 'EACCES':
-      console.error(bind + ' requires elevated privileges.');
-      process.exit(1);
-      break;
-    case 'EADDRINUSE':
-      console.error(bind + ' is already in use.');
-      process.exit(1);
-      break;
-    default:
-      throw error;
-  }
-};
+require('dotenv').config({ path: './config/.env' });
+require('./config/db');
 
-const server = http.createServer(app); // Node basique est démarré avec la méthode  createServer  du package  http
 
-server.on('error', errorHandler);
-server.on('listening', () => {
-  const address = server.address();
-  const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
-  console.log('Listening on ' + bind)
+// Middelware
+app.use(express.json());
+app.use(helmet());
+app.use(morgan("dev"));
+
+
+// gestionnaire de routage des images
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
+
+// Routes
+app.use('/api/auth', userRoutes);
+app.use('/api/post', postRoutes);
+
+app.listen(process.env.PORT, () => {
+  console.log("Backend server is running!");
 });
-
-server.listen(port);
