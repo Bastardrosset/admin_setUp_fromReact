@@ -62,7 +62,8 @@ module.exports.signIn = async (req, res) => {
                     res.status(200).json({
                         user: user._id,
                         token: jwt.sign({
-                                userId: user._id
+                                userId: user._id,
+                                isAdmin: user.isAdmin,
                             },
                             process.env.RANDOM_KEY_SECRET, {
                                 expiresIn: '24h'

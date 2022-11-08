@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import MessageIcon from '@mui/icons-material/Message';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
@@ -9,9 +9,6 @@ import { Link } from 'react-router-dom';
 
 export default function Post({post}) {
 
-    // const user = Users.filter(u => u.id === 1);
-    // console.log(user[0].username)
-
     const [likes, setLikes] = useState(post.likers.length);
     const [isLiked, setIsLiked] = useState(false);
     const [user, setUser] = useState({});
@@ -20,7 +17,7 @@ export default function Post({post}) {
 
     useEffect(() => {
         const fetchUser = async () => {
-          const res = await axios.get(`/auth?userId=${post.userId}`)
+          const res = await axios.get(`/users?userId=${post.userId}`)
           setUser(res.data)
         };
         fetchUser();
@@ -39,7 +36,7 @@ export default function Post({post}) {
                     <Link to={`profil/${user.username}`}>
                         <img 
                             className='post-profil-img' 
-                            src={user.profilPicture || publicFolder+"noAvatar.png"} 
+                            src={user.profilPicture || publicFolder+"/noAvatar.png"} 
                             alt='Profil poster'/>
                     </Link>
                     <span 

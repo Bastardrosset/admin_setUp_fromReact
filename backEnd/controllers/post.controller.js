@@ -37,7 +37,7 @@ module.exports.getAPost = async (req, res) => {
     }
 };
 
-//function crééer un post
+//function créer un post
 module.exports.createPost = async (req, res) => {
     let filename;
     if (req.file == null) {
@@ -80,7 +80,7 @@ module.exports.updatePost = async (req, res) => {
 module.exports.deletePost = async (req, res) => {
     try {
         const post = await PostModel.findById(req.params.id);
-            if (post.userId === req.body.userId) {
+            if (post.userId === req.body.userId || req.body.isAdmin) {
                 await post.deleteOne();
                 res.status(200).json('The post has been deleted');
             } else {
@@ -131,9 +131,6 @@ module.exports.timelinePost = async (req, res) => {
 
 //function commenter un post
 module.exports.commentPost = async (req, res) => {
-    if (!ObjectId.isValid(req.params.id)) {
-        return res.status(403).send('ID inconnu : ' + req.params.id)
-    }
     try {
         await PostModel.findByIdAndUpdate(
                 req.params.id, {
@@ -160,8 +157,6 @@ module.exports.commentPost = async (req, res) => {
 
 //function editer un commentaire
 module.exports.editComment = (req, res) => {
-    if (!ObjectId.isValid(req.params.id))
-        return res.status(401).send('ID inconnu : ' + req.params.id)
 
     try {
         return PostModel.findById(req.params.id,
@@ -190,8 +185,6 @@ module.exports.editComment = (req, res) => {
 
 //function supprimer un commentaire
 module.exports.deleteComment = (req, res) => {
-    if (!ObjectId.isValid(req.params.id))
-        return res.status(403).send('ID inconnu : ' + req.params.id)
 
     try {
         return PostModel.findByIdAndUpdate(
