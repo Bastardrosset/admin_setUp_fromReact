@@ -1,23 +1,33 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
 import UsersList from '../usersList/UsersList';
 import {Users} from '../../dummyData.js';
 import Online from '../online/Online';
-import HomeRigthBar from '../rightBar/RightBar'
+import HomeRigthBar from '../rightBar/RightBar';
+import {AuthContext} from '../../context/AuthContext';
 
 export default function LeftNav({user}) {
 
-  // const [user, setUser] = useState(users.length);
+  const [users, setUsers] = useState([]);
+  const { user: currentUser, dispatch } = useContext(AuthContext);
 
-  // useEffect(() => {
-  //   const fetchUser = async () => {
-  //     const res = await axios.get(`/users/users${user.users}`)
-  //     setUser(res.data)
-  //   };
-  //   fetchUser();
-  // }, [user]);
+//   useEffect(() => {
+//     const getUsers = async () => {
+  //const users ={
+//username,
+//ppofilPicture
+  // }
+//     try {
+//       const usersList = await axios.get(`/users/users/`);
+//       setUsers(usersList.data);
+//     } catch (error) {
+//       console.log(error)
+//     }
+//   };
+//   getUsers();
+// }, [users]);
 
   const HomeLeftBar = () => {
     return (

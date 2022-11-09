@@ -15,7 +15,7 @@ export default function Profil() {
   
   useEffect(() => {
     const fetchUser = async () => {
-      const res = await axios.get(`/users?username=${username}`)
+      const res = await axios.get(`/users?username=xavier`)
       setUser(res.data)
     };
     fetchUser();
@@ -39,8 +39,8 @@ export default function Profil() {
                     <img 
                         className='profil-user-img'
                         src={
-                          user.picture
-                          ? publicFolder + user.picture
+                          user.profilPicture
+                          ? publicFolder + user.profilPicture
                           : publicFolder + `noAvatar.png`} 
                         alt=''/>
                 </div>

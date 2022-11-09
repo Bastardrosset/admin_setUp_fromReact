@@ -1,16 +1,18 @@
-import React from 'react';
-import {Link} from 'react-router-dom'
+import React, { useContext } from 'react';
+import {Link} from 'react-router-dom';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
+import {AuthContext} from '../../context/AuthContext';
 
 
 const NavBar = () => {
- 
+  const { user } = useContext(AuthContext);
+  const publicFolder = process.env.REACT_APP_PUBLIC_FOLDER;
 
   return (
   <div className="top-bar-container">
     <div className="top-bar-left">
       <Link to='/'>
-        <img src='/images/logo.png' alt='Logo de groupomania'/>
+        <img src={publicFolder + 'logo.png'} alt='Logo de groupomania'/>
       </Link>
       <Link to='/'>
         <h1 className='title-logo'>Groupomania</h1>
@@ -19,7 +21,14 @@ const NavBar = () => {
     <div className="top-bar-right">
       <div className="top-bar-links">
         <div className="top-bar-profil">
-          <img src='/images/personn/ben.png' alt='Avatar' />
+          <Link to={`/profil/${user.username}`}>
+            <img src={
+                user.profilPicture
+                ? publicFolder + user.profilPicture
+                : publicFolder + 'noAvatar.png'
+                } 
+                alt='Avatar' />
+          </Link>
         </div>
         <div className="top-bar-icon-item">
           <PowerSettingsNewIcon className='icon'/>

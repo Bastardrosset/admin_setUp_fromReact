@@ -26,11 +26,32 @@ app.use(morgan("dev"));
 // gestionnaire de routage des images
 app.use('/images', express.static(path.join(__dirname, 'images')));
 
+// config upload multer
+const multer = require('multer');
+const storage = multer.diskStorage({
+    destination: (req, file, callBack) => {
+        callBack(null, "images");
+    },
+    filename: (req, file, callBack) => {
+        callBack(null, file.originalname)
+    },
+});
+const upload = multer({storage});
+
+app.post('/api/upload', upload.single('file'), (req, res) => {
+  try {
+    return res.status(200).json('file uploaded successfully.')
+  } catch (error) {
+    console.log(error)
+  };
+});
+
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/post', postRoutes);
+
 
 app.listen(process.env.PORT, () => {
   console.log("Backend server is running!");

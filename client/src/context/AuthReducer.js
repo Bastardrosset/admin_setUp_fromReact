@@ -1,5 +1,7 @@
 const AuthReducer = (state, action) => {
+
     switch(action.type) {
+        
         case "LOGIN_START":
             return {
                 user: null,
@@ -17,12 +19,10 @@ const AuthReducer = (state, action) => {
                 user: null,
                 isFetching: false,
                 error: true,
-            };
-        case "GET_USERS":
-                return action.playload;    
+            };   
 
-            default:
-                return state;
+        default:
+            return state;
     }
 }
 

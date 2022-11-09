@@ -41,12 +41,12 @@ module.exports.getAPost = async (req, res) => {
 module.exports.createPost = async (req, res) => {
     let filename;
     if (req.file == null) {
-        filename = req.body.userId + Date.now() + ".jpg";
+        filename = req.body.username + Date.now() + ".jpg";
     }
     const newPost = new PostModel({
         userId: req.body.userId,
         message: req.body.message,
-        picture: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : '',
+        postPicture: req.file ? `${req.protocol}://${req.get('host')}/images/${req.file.filename}` : '',
         likers: [],
         comments: [],
     })

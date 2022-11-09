@@ -48,6 +48,9 @@
                                             color: $Primaire;
                                         }
                                     }
+                                    & input[type="file"]{
+                                        display: none;
+                                    }
                                 }
                         }
                         & .share-button {

@@ -5,7 +5,6 @@ const router = express.Router();
 const userCtrl = require('../controllers/user.controller');
 
 const uploadCtrl = require('../controllers/upload.controller');
-const multer = require('../middelware/multer.config');
 
 
 router.get('/users', userCtrl.getAllUsers);
@@ -18,7 +17,7 @@ router.put('/:id/unfollow', userCtrl.unFollowUser);
 
 
 //multer Profil
-router.post('/upload', multer, uploadCtrl.uploadImg);
+// router.post('/avatar', multer, uploadCtrl.uploadImg);
 
 
 

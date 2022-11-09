@@ -36,7 +36,7 @@ export default function Post({post}) {
                     <Link to={`profil/${user.username}`}>
                         <img 
                             className='post-profil-img' 
-                            src={user.profilPicture || publicFolder+"/noAvatar.png"} 
+                            src={publicFolder + user.profilPicture || publicFolder+"/noAvatar.png"} 
                             alt='Profil poster'/>
                     </Link>
                     <span 
@@ -53,7 +53,7 @@ export default function Post({post}) {
                 <span className='post-text'>{post?.message}</span>
                 <img 
                     className='post-img'
-                    src={publicFolder + post.picture} 
+                    src={publicFolder + post.postPicture} 
                     alt='Contenu en lien avec le post'/>
             </div>
             <div className="post-bottom">

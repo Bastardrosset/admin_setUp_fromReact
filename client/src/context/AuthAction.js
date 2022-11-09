@@ -7,6 +7,7 @@ export const loginSuccess = (user) => ({
     playload: user,
 });
 
-export const loginFailure = () => ({
+export const loginFailure = (error) => ({
     type:"LOGIN_FAILURE",
+    playload: error
 });

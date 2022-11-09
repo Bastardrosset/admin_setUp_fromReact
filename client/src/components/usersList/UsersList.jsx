@@ -8,7 +8,7 @@ export default function UsersList({user}) {
     <li className='left-bar-users'>
         <img 
             className='left-bar-user-img' 
-            src={publicFolder+user.profilPicture}
+            src={publicFolder + user.profilPicture}
             alt=''/>
         <span className='left-bar-user-name'>{user.username}</span>
     </li>

@@ -25,7 +25,7 @@ export const Posts = [
     {
         id: 1,
         message:"Ces palges sont magnifiques ",
-        picture: 'post/maldives-1993704_640.jpg',
+        postPicture: 'post/maldives-1993704_640.jpg',
         date: "10 mins ago",
         userId: 1,
         likes: 55,
@@ -34,7 +34,7 @@ export const Posts = [
     {
         id: 2,
         message:"C'est l'époque des myrtilles et de faire des tartes",
-        picture: 'post/blueberries.jpg',
+        postPicture: 'post/blueberries.jpg',
         date: "5 mins ago",
         userId: 2,
         likes: 5,
@@ -43,7 +43,7 @@ export const Posts = [
     {
         id: 3,
         message:"Running",
-        picture: 'post/racing.jpg',
+        postPicture: 'post/racing.jpg',
         date: "20 mins ago",
         userId: 3,
         likes: 18,
@@ -52,7 +52,7 @@ export const Posts = [
     {
         id: 4,
         message:"Le Bictoin se reprend, je paris mon slip qu'il monte à 100 000$ avant la fin de l'année",
-        picture: 'post/bitcoin.jpg',
+        postPicture: 'post/bitcoin.jpg',
         date: "10 mins ago",
         userId: 4,
         likes: 2255,
